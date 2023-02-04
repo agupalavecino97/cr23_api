@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 export interface Iuser extends Document{ 
     email: string;
     password: string;
+    name: string;
     comparePassword: (password: string) => Promise<boolean>;
 }
 
@@ -13,17 +14,21 @@ const userSchema = new Schema({
         unique: true,
         required: true,
         lowecase: true,
+        index: true,
         trim: true
     },
     password: {
         type: String,
         required: true
+    },
+    name: {
+        type: String,
+        // required: true
     }
 });
 
 userSchema.pre<Iuser>('save', async function (next) {
     const user = this;
-    
     if (!user.isModified('password')) return next();
     
     const salt = await bcrypt.genSalt(10);
@@ -36,4 +41,4 @@ userSchema.methods.comparePassword = function (password: string): Promise<boolea
     return bcrypt.compare(password, this.password);
 }
 
-export default model<Iuser>('user', userSchema);
+export default model<Iuser>('User', userSchema);
