@@ -19,7 +19,6 @@ export const signUp = async (req: Request, res: Response): Promise<Response> => 
     }
     const newUser = new User({email, password, name});
     await newUser.save();
-    console.log(newUser)
     return res.status(200).json({token: createTokem(newUser), user: { id: newUser._id, name: newUser.name}})
 }
 

@@ -21,7 +21,6 @@ export const addToLineUp = async (req: Request, res: Response): Promise<Response
         return res.status(200).json({error: 'Datos faltantes.'})
     }
     bandasToAdd.forEach(async (banda: number) => {
-        console.log({userId: id, bandaId: banda.toString()})
         const lineUp = new Lineup({userId: id, bandaId: banda});
         await lineUp.save();            
     });
